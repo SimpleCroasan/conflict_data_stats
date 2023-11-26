@@ -5,36 +5,45 @@ library(dplyr)
 library(purrr)
 
 
-
-
-
-
-
-
-
 #volver caracter la columna de departamentos y municipios y concatenar un cero a la izquierda para poder luego usar map
+#quitar columnas no deseadas
 
+#homicide
 homicide1df <- homicide1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
+homicide1df <-homicide1df[,-c(1:36)]
+homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
 
+
+#disappearance
 disappearance1df <- disappearance1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
+disappearance1df <-disappearance1df[,-c(1:36)]
+disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
+
+#kidnapping
 
 kidnapping1df <- kidnapping1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 
+kidnapping1df <-kidnapping1df[,-c(1:36)]
+kidnapping1df$muni_code_hecho <- substr(kidnapping1df$muni_code_hecho, nchar(kidnapping1df$muni_code_hecho) - 2, nchar(kidnapping1df$muni_code_hecho))
+
+
+#recruitment
 recruitment1df <- recruitment1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 
-
+recruitment1df <-recruitment1df[,-c(1:36)]
+recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(recruitment1df$muni_code_hecho) - 2, nchar(recruitment1df$muni_code_hecho))
 
 
 
@@ -43,10 +52,9 @@ recruitment1df <- recruitment1df %>% mutate(
 
 #aplicando las funciones de dplyr para un data frame
 
-homicides_per_year <- homicide1%>% 
+homicides_per_year <- homicide1df%>% 
   group_by(yy_hecho) %>% 
   summarise(n=n()) %>%
-  collect()
   View(homicides_per_year)
   
 

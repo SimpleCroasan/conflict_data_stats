@@ -7,7 +7,7 @@ library(dplyr)
 library(purrr)
 
 map <- st_read("MGN2022_MPIO_POLITICO/MGN_MPIO_POLITICO.shp")
-map2 <- map[,1] 
+map2 <- map[,2] 
 plot(map2)
 
 
