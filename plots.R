@@ -25,7 +25,7 @@ ggplot(homicides_per_year, aes(x = yy_hecho, y = n, color = "homicidios")) +
        y = "Número de hechos",
        color = "tipo de hecho") +
   theme_light() +
-  scale_x_continuous(breaks = seq(min(homicides_per_group$yy_hecho), max(homicides_per_group$yy_hecho), by = 1))
+  scale_x_continuous(breaks = seq(min(homicides_per_year$yy_hecho), max(homicides_per_year$yy_hecho), by = 1))
 
 #plot homicides_per_year
 
@@ -55,3 +55,15 @@ ggplot(homicides_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
        color = "Grupo") +
   theme_light() +
   scale_x_continuous(breaks = seq(min(homicides_per_group$yy_hecho), max(homicides_per_group$yy_hecho), by = 1))
+
+
+
+ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
+  geom_line(size =0.8) +
+  geom_line(data = kidnapping_per_year, aes(x = yy_hecho, y = n, color = "TOTAL"), color="black")+
+  labs(title = "Número de secuestros por Año y Grupo",
+       x = "Año",
+       y = "Número de secuestros",
+       color = "Grupo") +
+  theme_light() +
+  scale_x_continuous(breaks = seq(min(kidnapping_per_group$yy_hecho), max(kidnapping_per_group$yy_hecho), by = 1))

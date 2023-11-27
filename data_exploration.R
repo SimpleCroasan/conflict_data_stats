@@ -27,3 +27,5 @@ print(all(apply(recruitment1df,2,function(x) all(!is.nan(x)))))
 print(all(apply(disappearance1df,2,function(x) all(!is.nan(x)))))
 print(any(is.na(disappearance1df)))
 
+
+
