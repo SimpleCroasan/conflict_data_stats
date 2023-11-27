@@ -52,17 +52,32 @@ recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(r
 
 
 #aplicando las funciones de dplyr para un data frame
+#datos por municipio 
 
 homicides_group_year_mun <- homicide1df %>% 
   group_by(yy_hecho,muni_code_hecho) %>%
   summarise(n=n())
 
+# datos por año
+
+disappearance_per_year <- disappearance1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
 
 homicides_per_year <- homicide1df%>% 
   group_by(yy_hecho) %>% 
   summarise(n=n()) 
 
+kidnapping_per_year <- kidnapping1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
+
+recruitment_per_year <- recruitment1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
   
+
+#datos por grupo
 
 homicides_per_group <- homicide1df %>%
   mutate(Grupo = case_when(
