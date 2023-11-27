@@ -32,3 +32,15 @@ ggplot(homicides_per_year, aes(x = yy_hecho, y = n)) +
   scale_y_continuous(limits = c(0, max(homicides_per_year$n) + 1000), breaks = seq(0, max(homicides_per_year$n) + 1000, by = 1000)) +
   scale_x_continuous(breaks = seq(min(homicides_per_year$yy_hecho), max(homicides_per_year$yy_hecho), by = 1))
 
+
+#plot homicides_per_group
+
+ggplot(homicides_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
+  geom_line(size =0.8) +
+  geom_line(data = homicides_per_year, aes(x = yy_hecho, y = n, color = "TOTAL"), color="black")+
+  labs(title = "Número de Homicidios por Año y Grupo",
+       x = "Año",
+       y = "Número de Homicidios",
+       color = "Grupo") +
+  theme_light() +
+  scale_x_continuous(breaks = seq(min(homicides_per_group$yy_hecho), max(homicides_per_group$yy_hecho), by = 1))

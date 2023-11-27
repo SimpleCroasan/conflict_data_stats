@@ -50,14 +50,28 @@ recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(r
 
 
 
+
 #aplicando las funciones de dplyr para un data frame
+
+homicides_group_year_mun <- homicide1df %>% 
+  group_by(yy_hecho,muni_code_hecho) %>%
+  summarise(n=n())
+
 
 homicides_per_year <- homicide1df%>% 
   group_by(yy_hecho) %>% 
-  summarise(n=n()) %>%
-  View(homicides_per_year)
+  summarise(n=n()) 
+
   
 
-
-
-
+homicides_per_group <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
