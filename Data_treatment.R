@@ -18,7 +18,7 @@ fila_deseada <- filter(kidnapping1df,match_group_id=="af42ca884de6db37305fa0ed47
 #homicide
 homicide1df <- homicide1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
-  muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
+  muni_code_hecho = ifelse(dept_code_hecho < 10 , as.character() %>% paste("0", muni_code_hecho, sep = "") , as.character(muni_code_hecho))
 )
 homicide1df <-homicide1df[,-c(3:36,1,51)]
 #homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
