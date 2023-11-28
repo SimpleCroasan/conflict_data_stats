@@ -21,7 +21,7 @@ homicide1df <- homicide1df %>% mutate(
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 homicide1df <-homicide1df[,-c(3:36,1,51)]
-homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
+#homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
 
 
 #disappearance
@@ -30,7 +30,7 @@ disappearance1df <- disappearance1df %>% mutate(
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 disappearance1df <-disappearance1df[,-c(3:36,1,53)]
-disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
+#disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
 
 #kidnapping
 
@@ -40,7 +40,7 @@ kidnapping1df <- kidnapping1df %>% mutate(
 )
 
 kidnapping1df <-kidnapping1df[,-c(3:36,1,51)]
-kidnapping1df$muni_code_hecho <- substr(kidnapping1df$muni_code_hecho, nchar(kidnapping1df$muni_code_hecho) - 2, nchar(kidnapping1df$muni_code_hecho))
+#kidnapping1df$muni_code_hecho <- substr(kidnapping1df$muni_code_hecho, nchar(kidnapping1df$muni_code_hecho) - 2, nchar(kidnapping1df$muni_code_hecho))
 
 
 #recruitment
@@ -50,7 +50,7 @@ recruitment1df <- recruitment1df %>% mutate(
 )
 
 recruitment1df <-recruitment1df[,-c(3:36,1,51)]
-recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(recruitment1df$muni_code_hecho) - 2, nchar(recruitment1df$muni_code_hecho))
+#recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(recruitment1df$muni_code_hecho) - 2, nchar(recruitment1df$muni_code_hecho))
 
 
 
@@ -63,6 +63,10 @@ recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(r
 
 homicides_group_year_mun <- homicide1df %>% 
   group_by(yy_hecho,muni_code_hecho, dept_code_hecho) %>%
+  summarise(n=n())
+
+homicides_group_mun <- homicide1df %>% 
+  group_by(muni_code_hecho) %>%
   summarise(n=n())
 
 # datos por año

@@ -6,10 +6,18 @@ library(disk.frame)
 library(dplyr)
 library(purrr)
 
-map <- st_read("MGN2022_MPIO_POLITICO/MGN_MPIO_POLITICO.shp")
-map2 <- map[,2] 
-plot(map2)
+map <- st_read("Mapas_mun/MunicipiosVeredas.shp")
 
+homicides_group_mun$DPTOMPIO<-factor(homicides_group_mun$muni_code_hecho)
+homicides_group_mun$muni_code_hecho<-NULL
+homicides_group_mun$homicidios<-homicides_group_mun$n
+homicides_group_mun$n<-NULL
+
+map <- map[,c(1,2,3)]
+
+map <- left_join(map, homicides_group_mun)
+
+qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,35000,40000)) # Para todo el pais
 
 
 # PLOTS PER_YEAR
