@@ -1,0 +1,269 @@
+---
+title: "Hechos del conflicto armado en Colombia"
+author: "Oscar Torrens , Cristian Hernández , Isidro Herrera"
+date: "2023-12-02"
+output: 
+  html_document:
+    theme: darkly
+    toc: TRUE 
+    toc_float: TRUE 
+    number_sections: TRUE
+    code_folding: show
+    
+lang: es-ES
+
+---
+
+# Introducción
+## ¿La creencia popular es acorde a los hechos?
+
+A lo largo de la historia reciente de Colombia, se ha planteado como una problemática el conflicto armado que azota al país, hasta el punto de formar parte del día a día de muchos Colombianos.Sin embargo, es valido preguntar: ¿Que tanto sabemos al respecto? ¿Que dicen los datos de lo que sabemos? ¿Que tanto ha afectado el conflicto armado al país y de que manera?.
+
+A continuación se hará un análisis a múltiples conjuntos de datos relacionados con el conflicto armado en Colombia con el fin de responder a la siguiente pregunta ¿Que tan acorde es la perspectiva popular de los hechos que rodean el conflicto con los hechos en si mismos?.Para poder responder las preguntas anteriormente planteadas se realizarán agrupaciones considerando el hecho ocurrido , autores, región , año del hecho entre otras.Ademas se realizarán gráficas para poder visualizar los resultados del análisis.
+
+
+# Paquetes de R requeridos
+
+Los paquetes requeridos para la realización del código fueron los siguientes:
+
+```{r, eval=FALSE}
+library(sf)  #Leer los archivos pertinentes para la creación de mapas
+library(tmap) #Trabajar con mapas
+library(readr) #leer y escribir archivos tipo csv
+library(ggplot2) #Realizar gráficas
+library(dplyr) #poder realizar operaciones sobre dataframes de manera simple
+
+```
+
+Adicional y opcionalmente se pueden usar estas dos librerías para poder leer grandes cantidades de csv sin tener inconvenientes con el disco.Sin embargo el código para cargar y trabajar con esa cantidad de archivos csv es meramente opcional y no será considerado para este proyecto.
+
+```{r, eval=FALSE}
+
+library(disk.frame)
+library(purrr)
+```
+
+# Preparación de los datos
+
+## Fuente de los datos
+
+El conjunto de datos utilizado fué sacado de los micro datos del DANE, se encuentran en el siguiente enlace:
+
+ * [Link a hipervinculo] (https://microdatos.dane.gov.co/index.php/catalog/795)
+ 
+## Informacion general sobre los datos
+
+Los datos en cuestión consisten en una recopilación de diferentes hechos registrados en diferentes bases de datos realizada por el DANE. Los datos representan diferentes hechos ocurridos en el marco del conflicto armado desde el año 1985 hasta el año 2018. Este conjunto de datos fué publicado en el año 2023 para la comisión de la verdad.
+
+Los datos se dividen en cuatro carpetas de csv correspondientes a homicidios, secuestros, reclutamientos y desapariciones.Cada carpeta contiene cien archivos csv correspondientes a cien replicas diferentes hechas para mantener una cierta integridad de los datos.La diferencia entre los datos que existen en diferentes replicas es mínima dada la función que cumplen las replicas en este caso y, por tanto, solo bastó con elegir una de las replicas para este proyecto.
+
+## Informacion especifica sobre los datos.
+
+A continuación se muestran los datos mas relevantes para este proyecto.
+
+
+### Id
+
+match_group_id: Es un identificador único en un grupo de csv, esto significa que puede estar presente la misma id en varios archivos csv. Esta información es útil para poder relacionar datos de varios archivos csv usando este identificador.
+
+### muni_code_hecho y dept_code_hecho
+
+muni_code_hecho: Codigo del municipio en que ocurrió el hecho.
+
+dept_code_hecho: Codigo del departamento en el que ocurrió el hecho.
+
+Ambas variables son de tipo numérico.
+
+### p_str
+
+p_str: Grupo al cual se le atribuye el hecho.Variable tipo carácter.
+
+### yy_hecho
+
+yy_hecho: año en el cual ocurrió el hecho. Variable tipo numérico.
+
+## Variables descartadas
+
+* in # : Son treinta y cuatro columnas que representan en que bases de datos está el registro actual.
+
+* edad_categoría: Categoría de edad de la persona victima del hecho.
+
+* edad_categoría_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+* edad_jep: Edad de la persona victima del hecho.
+
+* edad_jep_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+* etnia: Etnia de la persona victima del hecho.
+
+* etnia_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+* sexo: sexo de la persona victima del hecho.
+
+* sexo_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+* yy_mes_hecho: Año y mes del hecho.
+
+* is_conflict: Puede tomar True o False si se relaciona con el conflicto armado o no.
+
+* is_conflict_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+* is_muni_hecho_imputed: Puede tomar True o False si es resultado de imputación o no.
+
+## Importar los datos
+
+Para importar los datos se debe implementar el siguiente código:
+
+```{r}
+#Importar archivos csv
+
+#ruta de los archivos
+homicide_route <- "../Homicidio.csv/verdata-homicidio-R99.csv"
+kidnapping_route <- "../Secuestro.csv/verdata-secuestro-R99.csv"
+disappearances_route <- "../Desaparicion.csv/verdata-desaparicion-R99.csv"
+recruitment_route <-"../Reclutamiento.csv/verdata-reclutamiento-R99.csv"
+
+#Leer csv
+homicide1df <-read.csv(homicide_route)
+kidnapping1df <-read.csv(kidnapping_route)
+recruitment1df <-read.csv(recruitment_route)
+disappearance1df <-read.csv(disappearances_route)
+
+```
+
+##Revisar los datos
+Para revisar si los dataframes tienen espacios na o nan se utilizó el siguiente código:
+
+```{r, eval=FALSE}
+#exploracion de datos
+
+#revisar si hay campos na en los datafrmaes
+print(any(is.na(homicide1df)))
+
+#revisar si hay campos nan en los dataframes
+print(all(apply(homicide1df,2,function(x) all(!is.nan(x)))))
+
+
+
+print(all(apply(kidnapping1df,2,function(x) all(!is.nan(x)))))
+print(any(is.na(kidnapping1df)))
+
+
+
+print(any(is.na(recruitment1df)))
+print(all(apply(recruitment1df,2,function(x) all(!is.nan(x)))))
+
+
+
+print(all(apply(disappearance1df,2,function(x) all(!is.nan(x)))))
+print(any(is.na(disappearance1df)))
+
+
+
+```
+
+Los dataframes no presentaron inconvenientes.
+
+
+## Quitar las columnas pertinentes y modificar campos
+
+Es vital para este proyecto poder mapear los códigos de los departamentos y municipios para tener una vista geográfica de los hechos.Fué necesario cambiar a tipo caractér las columnas de departamento y municipio.
+
+En el siguiente código se hace el cambio de tipo usando la funcion mutate y se eliminan las columnas pertinentes:
+
+```{r, eval=FALSE}
+
+#homicide
+#aplicando mutate para cambiar el tipo de variable
+homicide1df <- homicide1df %>% mutate(
+  dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
+  muni_code_hecho = ifelse(dept_code_hecho < 10 , as.character() %>% paste("0", muni_code_hecho, sep = "") , as.character(muni_code_hecho))
+)
+#eliminando columnas
+homicide1df <-homicide1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
+#homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
+
+
+```
+
+Codigo completo:
+
+```{r, eval=FALSE}
+
+
+#homicide
+#aplicando mutate para cambiar el tipo de variable
+homicide1df <- homicide1df %>% mutate(
+  dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
+  muni_code_hecho = ifelse(dept_code_hecho < 10 , as.character() %>% paste("0", muni_code_hecho, sep = "") , as.character(muni_code_hecho))
+)
+#eliminando columnas
+homicide1df <-homicide1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
+#homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
+
+
+#disappearance
+disappearance1df <- disappearance1df %>% mutate(
+  dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
+  muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
+)
+disappearance1df <-disappearance1df[,-c(3:36,1,38:47,49,51:53,54)]
+#disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
+
+#kidnapping
+
+kidnapping1df <- kidnapping1df %>% mutate(
+  dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
+  muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
+)
+
+kidnapping1df <-kidnapping1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
+#kidnapping1df$muni_code_hecho <- substr(kidnapping1df$muni_code_hecho, nchar(kidnapping1df$muni_code_hecho) - 2, nchar(kidnapping1df$muni_code_hecho))
+
+
+#recruitment
+recruitment1df <- recruitment1df %>% mutate(
+  dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
+  muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
+)
+
+recruitment1df <-recruitment1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
+#recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(recruitment1df$muni_code_hecho) - 2, nchar(recruitment1df$muni_code_hecho))
+
+
+
+
+
+
+
+```
+
+## Revision de match_id
+
+Este código se usó para comprobar la relación y funcionamiento de Id dentro de un grupo de csv:
+
+```{r, eval=FALSE}
+
+#revisar si el id conecta diferentes hechos
+valores_comunes <- homicide1df$match_group_id %in% kidnapping1df$match_group_id
+print(any(valores_comunes)) #mostrar si existen filas con la misma id en los df
+
+#generar una lista de filas  en comun
+valores_comunes2 <- intersect(homicide1df$match_group_id, kidnapping1df$match_group_id)
+
+#comprobar
+print(valores_comunes2)
+fila_deseada <- filter(kidnapping1df,match_group_id=="af42ca884de6db37305fa0ed47cb82a50f523aea")
+
+
+
+```
+
+La intención detrás del código era verificar si existía una relación entre los csv con los Id y cual era la naturaleza de esa relación. De esta forma se pueden hallar coincidencias entre varios hechos.
+
+
+# Analisis de los datos
+
+
+
+# Conclusiones

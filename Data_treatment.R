@@ -6,8 +6,12 @@ library(purrr)
 
 #revisar si el id conecta diferentes hechos
 valores_comunes <- homicide1df$match_group_id %in% kidnapping1df$match_group_id
+print(any(valores_comunes)) #mostrar si existen filas con la misma id en los df
+
+#generar una lista de filas  en comun
 valores_comunes2 <- intersect(homicide1df$match_group_id, kidnapping1df$match_group_id)
-print(any(valores_comunes))
+
+#comprobar
 print(valores_comunes2)
 fila_deseada <- filter(kidnapping1df,match_group_id=="af42ca884de6db37305fa0ed47cb82a50f523aea")
 
@@ -16,11 +20,13 @@ fila_deseada <- filter(kidnapping1df,match_group_id=="af42ca884de6db37305fa0ed47
 #quitar columnas no deseadas
 
 #homicide
+#aplicando mutate para cambiar el tipo de variable
 homicide1df <- homicide1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(dept_code_hecho < 10 , as.character() %>% paste("0", muni_code_hecho, sep = "") , as.character(muni_code_hecho))
 )
-homicide1df <-homicide1df[,-c(3:36,1,51)]
+#eliminando columnas
+homicide1df <-homicide1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 #homicide1df$muni_code_hecho <- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
 
 
@@ -29,7 +35,7 @@ disappearance1df <- disappearance1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
-disappearance1df <-disappearance1df[,-c(3:36,1,53)]
+disappearance1df <-disappearance1df[,-c(3:36,1,38:47,49,51:53,54)]
 #disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
 
 #kidnapping
@@ -39,7 +45,7 @@ kidnapping1df <- kidnapping1df %>% mutate(
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 
-kidnapping1df <-kidnapping1df[,-c(3:36,1,51)]
+kidnapping1df <-kidnapping1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 #kidnapping1df$muni_code_hecho <- substr(kidnapping1df$muni_code_hecho, nchar(kidnapping1df$muni_code_hecho) - 2, nchar(kidnapping1df$muni_code_hecho))
 
 
@@ -49,7 +55,7 @@ recruitment1df <- recruitment1df %>% mutate(
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
 
-recruitment1df <-recruitment1df[,-c(3:36,1,51)]
+recruitment1df <-recruitment1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 #recruitment1df$muni_code_hecho <- substr(recruitment1df$muni_code_hecho, nchar(recruitment1df$muni_code_hecho) - 2, nchar(recruitment1df$muni_code_hecho))
 
 
@@ -132,3 +138,5 @@ kidnapping_homicide_per_group <- kidnapp_homicidie %>%
   )) %>%
   group_by(yy_hecho.x,Grupo) %>%
   summarise(n=n())
+
+
