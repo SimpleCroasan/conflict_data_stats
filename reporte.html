@@ -1601,17 +1601,17 @@ Herrera</h4>
 es acorde a los hechos?</h2>
 <p>A lo largo de la historia reciente de Colombia, se ha planteado como
 una problemática el conflicto armado que azota al país, hasta el punto
-de formar parte del día a día de muchos Colombianos.Sin embargo, es
+de formar parte del día a día de muchos Colombianos. Sin embargo, es
 valido preguntar: ¿Que tanto sabemos al respecto? ¿Que dicen los datos
 de lo que sabemos? ¿Que tanto ha afectado el conflicto armado al país y
 de que manera?.</p>
 <p>A continuación se hará un análisis a múltiples conjuntos de datos
 relacionados con el conflicto armado en Colombia con el fin de responder
 a la siguiente pregunta ¿Que tan acorde es la perspectiva popular de los
-hechos que rodean el conflicto con los hechos en si mismos?.Para poder
+hechos que rodean el conflicto con los hechos en si mismos?. Para poder
 responder las preguntas anteriormente planteadas se realizarán
-agrupaciones considerando el hecho ocurrido , autores, región , año del
-hecho entre otras.Ademas se realizarán gráficas para poder visualizar
+agrupaciones considerando el hecho ocurrido , autores, región, año del
+hecho entre otras. Ademas se realizarán gráficas para poder visualizar
 los resultados del análisis.</p>
 </div>
 </div>
@@ -1624,14 +1624,15 @@ siguientes:</p>
 library(tmap) #Trabajar con mapas
 library(readr) #leer y escribir archivos tipo csv
 library(ggplot2) #Realizar gráficas
-library(dplyr) #poder realizar operaciones sobre dataframes de manera simple</code></pre>
-<p>Adicional y opcionalmente se pueden usar estas dos librerías para
+library(dplyr) #poder realizar operaciones sobre dataframes de manera simple
+library(tidyr) #poder cambiar valores NA por cero en un dataframe
+library(purrr) #poder trabajar con dataframes usando la funcion reduce</code></pre>
+<p>Adicional y opcionalmente se puede usar la siguiente librería para
 poder leer grandes cantidades de csv sin tener inconvenientes con el
-disco.Sin embargo el código para cargar y trabajar con esa cantidad de
+disco. Sin embargo el código para cargar y trabajar con esa cantidad de
 archivos csv es meramente opcional y no será considerado para este
 proyecto.</p>
-<pre class="r"><code>library(disk.frame)
-library(purrr)</code></pre>
+<pre class="r"><code>library(disk.frame)</code></pre>
 </div>
 <div id="preparación-de-los-datos" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Preparación de los
@@ -1983,9 +1984,9 @@ datos</h1>
 <h2><span class="header-section-number">4.1</span> Agrupando los datos
 en funcion de las variables de interés</h2>
 <p>Para poder obtener información relevante de los conjuntos de datos es
-importante agrupar los datos.En este caso es vital realizar agrupaciones
-en función del año , el municipio y el grupo autor del hecho en
-cuestión.</p>
+importante agrupar los datos. En este caso es vital realizar
+agrupaciones en función del año , el municipio y el grupo autor del
+hecho en cuestión.</p>
 <div id="agrupación-por-municipio" class="section level3" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> Agrupación por
 municipio</h3>
@@ -2011,7 +2012,16 @@ kidnapping_per_year &lt;- kidnapping1df%&gt;%
 
 recruitment_per_year &lt;- recruitment1df%&gt;% 
   group_by(yy_hecho) %&gt;% 
-  summarise(n=n()) </code></pre>
+  summarise(n=n()) 
+
+lista_hechos &lt;- list(disappearance_per_year,homicides_per_year,recruitment_per_year,kidnapping_per_year)
+
+#total de violencia por  año
+total_per_year &lt;-lista_hechos%&gt;%
+  reduce(full_join, by = &quot;yy_hecho&quot;) %&gt;% #unir por la columna año
+  replace_na(replace= list(n.x.x =0 , n.y.y=0 , n.x=0, n.y=0)) %&gt;% #reemplazar por cero los valores NA
+  mutate(total=rowSums(select(., starts_with(&quot;n&quot;)))) #sumar los hechos
+total_per_year &lt;-total_per_year[,-c(2:5)] #eliminar las columnas sobrantes</code></pre>
 <p>El resultado de esta agrupación es un dataframe por cada conjunto de
 datos(desapariciones, homicidios, secuestros y reclutamiento
 respectivamente). El dataframe generado consta de dos columnas
@@ -2084,10 +2094,104 @@ n
 </tr>
 </tbody>
 </table>
+<p>también se tiene el total de hechos violentos por año:</p>
+<table class="table table-striped table-bordered">
+<caption>
+Agrupación, total de hechos por año
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+yy_hecho
+</th>
+<th style="text-align:center;">
+total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+1985
+</td>
+<td style="text-align:center;">
+5094
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1986
+</td>
+<td style="text-align:center;">
+5608
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1987
+</td>
+<td style="text-align:center;">
+6692
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1988
+</td>
+<td style="text-align:center;">
+9630
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1989
+</td>
+<td style="text-align:center;">
+9534
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1990
+</td>
+<td style="text-align:center;">
+12357
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="agrupación-por-grupo-armado" class="section level3" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> Agrupación por
 grupo armado</h3>
+<pre class="r"><code>homicides_per_group &lt;- homicide1df %&gt;%
+  mutate(Grupo = case_when(
+    
+    
+    grepl(&quot;GUE&quot;,p_str) ~ &quot;GUERRILLA&quot;,
+    grepl(&quot;PARA&quot;,p_str) ~ &quot;PARAMILITARES&quot;,
+    grepl(&quot;EST&quot;,p_str) ~ &quot;ESTADO&quot;,
+    grepl(&quot;multiple&quot;,p_str) ~ &quot;MULTIPLE&quot;,
+    TRUE ~ &quot;OTRO&quot;
+  )) %&gt;%
+  group_by(yy_hecho,Grupo) %&gt;%
+  summarise(n=n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;yy_hecho&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>kidnapping_per_group &lt;- kidnapping1df %&gt;%
+  mutate(Grupo = case_when(
+    
+    
+    grepl(&quot;GUE&quot;,p_str) ~ &quot;GUERRILLA&quot;,
+    grepl(&quot;PARA&quot;,p_str) ~ &quot;PARAMILITARES&quot;,
+    grepl(&quot;EST&quot;,p_str) ~ &quot;ESTADO&quot;,
+    grepl(&quot;multiple&quot;,p_str) ~ &quot;MULTIPLE&quot;,
+    TRUE ~ &quot;OTRO&quot;
+  )) %&gt;%
+  group_by(yy_hecho,Grupo) %&gt;%
+  summarise(n=n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;yy_hecho&#39;. You can override using the
+## `.groups` argument.</code></pre>
 </div>
 <div id="secuestros-que-llevan-a-homicidios" class="section level3" number="4.1.4">
 <h3><span class="header-section-number">4.1.4</span> Secuestros que

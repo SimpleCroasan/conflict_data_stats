@@ -17,9 +17,9 @@ lang: es-ES
 # Introducción
 ## ¿La creencia popular es acorde a los hechos?
 
-A lo largo de la historia reciente de Colombia, se ha planteado como una problemática el conflicto armado que azota al país, hasta el punto de formar parte del día a día de muchos Colombianos.Sin embargo, es valido preguntar: ¿Que tanto sabemos al respecto? ¿Que dicen los datos de lo que sabemos? ¿Que tanto ha afectado el conflicto armado al país y de que manera?.
+A lo largo de la historia reciente de Colombia, se ha planteado como una problemática el conflicto armado que azota al país, hasta el punto de formar parte del día a día de muchos Colombianos. Sin embargo, es valido preguntar: ¿Que tanto sabemos al respecto? ¿Que dicen los datos de lo que sabemos? ¿Que tanto ha afectado el conflicto armado al país y de que manera?.
 
-A continuación se hará un análisis a múltiples conjuntos de datos relacionados con el conflicto armado en Colombia con el fin de responder a la siguiente pregunta ¿Que tan acorde es la perspectiva popular de los hechos que rodean el conflicto con los hechos en si mismos?.Para poder responder las preguntas anteriormente planteadas se realizarán agrupaciones considerando el hecho ocurrido , autores, región , año del hecho entre otras.Ademas se realizarán gráficas para poder visualizar los resultados del análisis.
+A continuación se hará un análisis a múltiples conjuntos de datos relacionados con el conflicto armado en Colombia con el fin de responder a la siguiente pregunta ¿Que tan acorde es la perspectiva popular de los hechos que rodean el conflicto con los hechos en si mismos?. Para poder responder las preguntas anteriormente planteadas se realizarán agrupaciones considerando el hecho ocurrido , autores, región, año del hecho entre otras. Ademas se realizarán gráficas para poder visualizar los resultados del análisis.
 
 
 # Paquetes de R requeridos
@@ -31,6 +31,8 @@ library(tmap) #Trabajar con mapas
 library(readr) #leer y escribir archivos tipo csv
 library(ggplot2) #Realizar gráficas
 library(dplyr) #poder realizar operaciones sobre dataframes de manera simple
+library(tidyr) #poder cambiar valores NA por cero en un dataframe
+library(purrr) #poder trabajar con dataframes usando la funcion reduce
 
 ```
 
@@ -41,15 +43,16 @@ library(tmap) #Trabajar con mapas
 library(readr) #leer y escribir archivos tipo csv
 library(ggplot2) #Realizar gráficas
 library(dplyr) #poder realizar operaciones sobre dataframes de manera simple
+library(tidyr) #poder cambiar valores NA por cero en un dataframe
+library(purrr) #poder trabajar con dataframes usando la funcion reduce
 
 ```
 
-Adicional y opcionalmente se pueden usar estas dos librerías para poder leer grandes cantidades de csv sin tener inconvenientes con el disco.Sin embargo el código para cargar y trabajar con esa cantidad de archivos csv es meramente opcional y no será considerado para este proyecto.
+Adicional y opcionalmente se puede usar la siguiente librería para poder leer grandes cantidades de csv sin tener inconvenientes con el disco. Sin embargo el código para cargar y trabajar con esa cantidad de archivos csv es meramente opcional y no será considerado para este proyecto.
 
 ```{r, eval=FALSE}
 
 library(disk.frame)
-library(purrr)
 ```
 
 # Preparación de los datos
@@ -285,7 +288,7 @@ knitr::kable(
 
 ## Agrupando los datos en funcion de las variables de interés
 
-Para poder obtener información relevante de los conjuntos de datos es importante agrupar los datos.En este caso es vital realizar agrupaciones en función del año , el municipio y el grupo autor del hecho en cuestión.
+Para poder obtener información relevante de los conjuntos de datos es importante agrupar los datos. En este caso es vital realizar agrupaciones en función del año , el municipio y el grupo autor del hecho en cuestión.
 
 ### Agrupación por municipio
 
@@ -314,6 +317,15 @@ kidnapping_per_year <- kidnapping1df%>%
 recruitment_per_year <- recruitment1df%>% 
   group_by(yy_hecho) %>% 
   summarise(n=n()) 
+
+lista_hechos <- list(disappearance_per_year,homicides_per_year,recruitment_per_year,kidnapping_per_year)
+
+#total de violencia por  año
+total_per_year <-lista_hechos%>%
+  reduce(full_join, by = "yy_hecho") %>% #unir por la columna año
+  replace_na(replace= list(n.x.x =0 , n.y.y=0 , n.x=0, n.y=0)) %>% #reemplazar por cero los valores NA
+  mutate(total=rowSums(select(., starts_with("n")))) #sumar los hechos
+total_per_year <-total_per_year[,-c(2:5)] #eliminar las columnas sobrantes
   
 
 
@@ -335,9 +347,55 @@ knitr::kable(
 )
 ```
 
+también se tiene el total de hechos violentos por año:
+
+```{r echo=FALSE}
+knitr::kable(
+  head(total_per_year),
+  caption = "Agrupación, total de hechos por año",
+  table.attr = 'class="table table-striped table-bordered"',
+  align = "c",
+  format = "html"
+  
+)
+```
+
 ### Agrupación por grupo armado
 
-```{r, echo=TRUE,results='hide'}
+```{r, echo=TRUE,results='hide',include=FALSE}
+homicides_per_group <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+
+
+kidnapping_per_group <- kidnapping1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+  
+
+
+```
+
+
+```{r, eval=FALSE}
 homicides_per_group <- homicide1df %>%
   mutate(Grupo = case_when(
     

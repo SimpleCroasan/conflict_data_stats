@@ -3,6 +3,7 @@ library(ggplot2)
 library(disk.frame)
 library(dplyr)
 library(purrr)
+library(tidyr) 
 
 #revisar si el id conecta diferentes hechos
 valores_comunes <- homicide1df$match_group_id %in% kidnapping1df$match_group_id
@@ -94,8 +95,17 @@ kidnapping_per_year <- kidnapping1df%>%
 recruitment_per_year <- recruitment1df%>% 
   group_by(yy_hecho) %>% 
   summarise(n=n()) 
-  
 
+lista_hechos <- list(disappearance_per_year,homicides_per_year,recruitment_per_year,kidnapping_per_year)
+
+#total de violencia por  año
+total_per_year <-lista_hechos%>%
+  reduce(full_join, by = "yy_hecho") %>% #unir por la columna año
+  replace_na(replace= list(n.x.x =0 , n.y.y=0 , n.x=0, n.y=0)) %>% #reemplazar por cero los valores NA
+  mutate(total=rowSums(select(., starts_with("n")))) #sumar los hechos
+total_per_year <-total_per_year[,-c(2:5)] #eliminar las columnas sobrantes
+
+####
 #datos por grupo
 
 homicides_per_group <- homicide1df %>%

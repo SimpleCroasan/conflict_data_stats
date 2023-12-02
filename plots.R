@@ -24,6 +24,7 @@ qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,
 #plot total per year
 
 ggplot(homicides_per_year, aes(x = yy_hecho, y = n, color = "homicidios")) +
+  geom_line(data = total_per_year, aes(x = yy_hecho, y = total, linetype = "TOTAL"),color="black")+
   geom_line(size =0.8) +
   geom_line(data = disappearance_per_year, aes(x = yy_hecho, y = n, color = "desapariciones"),size=0.8)+
   geom_line(data = kidnapping_per_year, aes(x = yy_hecho, y = n, color = "secuestros"),size=0.8)+
