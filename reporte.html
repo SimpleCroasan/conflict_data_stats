@@ -1793,12 +1793,13 @@ homicide1df &lt;-homicide1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 #homicide1df$muni_code_hecho &lt;- substr(homicide1df$muni_code_hecho, nchar(homicide1df$muni_code_hecho) - 2, nchar(homicide1df$muni_code_hecho))
 
 
+
 #disappearance
 disappearance1df &lt;- disappearance1df %&gt;% mutate(
   dept_code_hecho = ifelse(dept_code_hecho &lt; 10 , sprintf(&quot;%02d&quot;, dept_code_hecho) %&gt;% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho &lt; 10 , sprintf(&quot;%02d&quot;, muni_code_hecho) %&gt;% as.character(), as.character(muni_code_hecho))
 )
-disappearance1df &lt;-disappearance1df[,-c(3:36,1,38:47,49,51:53,54)]
+disappearance1df &lt;-disappearance1df[,-c(3:36,1,38:47,49,51:53,55)]
 #disappearance1df$muni_code_hecho &lt;- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
 
 #kidnapping
@@ -1839,6 +1840,72 @@ fila_deseada &lt;- filter(kidnapping1df,match_group_id==&quot;af42ca884de6db3730
 <p>La intención detrás del código era verificar si existía una relación
 entre los csv con los Id y cual era la naturaleza de esa relación. De
 esta forma se pueden hallar coincidencias entre varios hechos.</p>
+<p>A continuación se muestra un ejemplo del dataframe generado tras
+filtrar las variables:</p>
+<table>
+<caption>Registros de homicidios en el marco del conflicto
+armado</caption>
+<colgroup>
+<col width="45%" />
+<col width="17%" />
+<col width="17%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">match_group_id</th>
+<th align="left">dept_code_hecho</th>
+<th align="left">muni_code_hecho</th>
+<th align="left">p_str</th>
+<th align="right">yy_hecho</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">d85d678d00022fe01a83613424973c72b20a0816</td>
+<td align="left">88</td>
+<td align="left">88001</td>
+<td align="left">GUE-FARC</td>
+<td align="right">1999</td>
+</tr>
+<tr class="even">
+<td align="left">5320d98ba7095bff7a0bb0fa88654b4cbcfa7c5b</td>
+<td align="left">88</td>
+<td align="left">88001</td>
+<td align="left">EST</td>
+<td align="right">2017</td>
+</tr>
+<tr class="odd">
+<td align="left">1367d5868b65245e855fc29fe262104badcd23d1</td>
+<td align="left">23</td>
+<td align="left">23855</td>
+<td align="left">PARA</td>
+<td align="right">1988</td>
+</tr>
+<tr class="even">
+<td align="left">0fbd7d8be5d68aac2b8f597e8f5f99431dde1840</td>
+<td align="left">95</td>
+<td align="left">95001</td>
+<td align="left">EST</td>
+<td align="right">1988</td>
+</tr>
+<tr class="odd">
+<td align="left">e0712f8a0a6937c26499ac932142bf6183f10da2</td>
+<td align="left">23</td>
+<td align="left">23001</td>
+<td align="left">PARA</td>
+<td align="right">1989</td>
+</tr>
+<tr class="even">
+<td align="left">74b6ec5a1b38c4cd4bbf679cd23899840c477b81</td>
+<td align="left">95</td>
+<td align="left">95015</td>
+<td align="left">EST</td>
+<td align="right">2005</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="analisis-de-los-datos" class="section level1" number="4">
