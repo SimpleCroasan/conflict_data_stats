@@ -2175,10 +2175,10 @@ grupo armado</h3>
     TRUE ~ &quot;OTRO&quot;
   )) %&gt;%
   group_by(yy_hecho,Grupo) %&gt;%
-  summarise(n=n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;yy_hecho&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<pre class="r"><code>kidnapping_per_group &lt;- kidnapping1df %&gt;%
+  summarise(n=n())
+
+
+kidnapping_per_group &lt;- kidnapping1df %&gt;%
   mutate(Grupo = case_when(
     
     
@@ -2190,8 +2190,6 @@ grupo armado</h3>
   )) %&gt;%
   group_by(yy_hecho,Grupo) %&gt;%
   summarise(n=n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;yy_hecho&#39;. You can override using the
-## `.groups` argument.</code></pre>
 </div>
 <div id="secuestros-que-llevan-a-homicidios" class="section level3" number="4.1.4">
 <h3><span class="header-section-number">4.1.4</span> Secuestros que
