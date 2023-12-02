@@ -77,6 +77,8 @@ homicides_group_mun <- homicide1df %>%
 
 # datos por año
 
+#Agrupar datos por año del hecho y contando
+
 disappearance_per_year <- disappearance1df%>% 
   group_by(yy_hecho) %>% 
   summarise(n=n()) 

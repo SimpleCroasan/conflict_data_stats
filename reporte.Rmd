@@ -140,7 +140,7 @@ disappearance1df <-read.csv(disappearances_route)
 
 ```
 
-##Revisar los datos
+## Revisar los datos
 Para revisar si los dataframes tienen espacios na o nan se utilizó el siguiente código:
 
 ```{r, eval=FALSE}
@@ -273,14 +273,106 @@ A continuación se muestra un ejemplo del dataframe generado tras filtrar las va
 ```{r echo=FALSE}
 knitr::kable(
   head(homicide1df),
-  caption = "Registros de homicidios en el marco del conflicto armado"
+  caption = "Registros de homicidios en el marco del conflicto armado",
+  format = "html",
+  table.attr = 'class="table table-striped table-bordered"',
+  align = "c",
 )
 ```
 
 
 # Analisis de los datos
 
+## Agrupando los datos en funcion de las variables de interés
 
+Para poder obtener información relevante de los conjuntos de datos es importante agrupar los datos.En este caso es vital realizar agrupaciones en función del año , el municipio y el grupo autor del hecho en cuestión.
+
+### Agrupación por municipio
+
+
+
+### Agrupación por año
+
+```{r, echo=TRUE,results='hide'}
+
+# datos por año
+
+#Agrupar datos por año del hecho y contando
+
+disappearance_per_year <- disappearance1df%>% 
+  group_by(yy_hecho) %>% #agrupa en función de la columna yy_hecho
+  summarise(n=n()) #cuenta el numero de filas en función de la agrupación
+
+homicides_per_year <- homicide1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
+
+kidnapping_per_year <- kidnapping1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
+
+recruitment_per_year <- recruitment1df%>% 
+  group_by(yy_hecho) %>% 
+  summarise(n=n()) 
+  
+
+
+```
+
+El resultado de esta agrupación es un dataframe por cada conjunto de datos(desapariciones, homicidios, secuestros y reclutamiento respectivamente). El dataframe generado consta de dos columnas "yy_hecho" que representa el año y "n" que representa el numero de veces que ocurrió el hecho en ese año.
+
+Es importante recalcar que estos dataframes serán utilizados en futuras secciones.
+
+
+```{r echo=FALSE}
+knitr::kable(
+  head(homicides_per_year),
+  caption = "Agrupación, homicidios por año",
+  table.attr = 'class="table table-striped table-bordered"',
+  align = "c",
+  format = "html"
+  
+)
+```
+
+### Agrupación por grupo armado
+
+```{r, echo=TRUE,results='hide'}
+homicides_per_group <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+
+
+kidnapping_per_group <- kidnapping1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+  
+
+
+```
+
+
+### Secuestros que llevan a homicidios
+
+## Graficas de los hechos
 
 
 
