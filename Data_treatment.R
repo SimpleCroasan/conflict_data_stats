@@ -35,7 +35,7 @@ disappearance1df <- disappearance1df %>% mutate(
   dept_code_hecho = ifelse(dept_code_hecho < 10 , sprintf("%02d", dept_code_hecho) %>% as.character(), as.character(dept_code_hecho)),
   muni_code_hecho = ifelse(muni_code_hecho < 10 , sprintf("%02d", muni_code_hecho) %>% as.character(), as.character(muni_code_hecho))
 )
-disappearance1df <-disappearance1df[,-c(3:36,1,38:47,49,51:53,54)]
+disappearance1df <-disappearance1df[,-c(3:36,1,38:47,49,51:53,55)]
 #disappearance1df$muni_code_hecho <- substr(disappearance1df$muni_code_hecho, nchar(disappearance1df$muni_code_hecho) - 2, nchar(disappearance1df$muni_code_hecho))
 
 #kidnapping
