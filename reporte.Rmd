@@ -562,6 +562,8 @@ ggplot(disappearance_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
 ```
 
 
+En la gráfica de desapariciones por grupo la linea negra representa el total de desapariciones en función del año y el resto de lineas representan el numero de desapariciones realizados por diversos grupos en función del año.
+
 
 
 ### Secuestros que llevan a homicidios

@@ -85,12 +85,14 @@ ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
 
 #plot disappearence_per_group
 
-ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
+ggplot(disappearance_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
   geom_line(size =0.8) +
-  geom_line(data = kidnapping_per_year, aes(x = yy_hecho, y = n, linetype = "TOTAL"), color="black")+
-  labs(title = "Número de secuestros por Año y Grupo",
+  geom_line(data = disappearance_per_year, aes(x = yy_hecho, y = n, linetype = "TOTAL"),color="black")+
+  labs(title = "Número de desapariciones por Año y Grupo",
        x = "Año",
-       y = "Número de secuestros",
+       y = "Número de desapariciones",
        color = "Grupo") +
   theme_light() +
-  scale_x_continuous(breaks = seq(min(kidnapping_per_group$yy_hecho), max(kidnapping_per_group$yy_hecho), by = 3))
+  scale_x_continuous(breaks = seq(min(disappearance_per_group$yy_hecho), max(disappearance_per_group$yy_hecho), by = 3))
+
+
