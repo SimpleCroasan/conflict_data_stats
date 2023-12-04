@@ -9,21 +9,25 @@ library(purrr)
 # -*- coding: utf-8 -*-
 
 
+#mapa homicidios historico por municipio
+map <- st_read("Mapas_dept/DepartamentosVeredas.shp")
 
-map <- st_read("Mapas_mun/MunicipiosVeredas.shp")
+homicides_group_dept$DPTO_CCDGO<-factor(homicides_group_dept$dept_code_hecho)
+homicides_group_dept$dept_code_hecho<-NULL
+homicides_group_dept$homicidios<-homicides_group_dept$n
+homicides_group_dept$n<-NULL
 
-homicides_group_mun$DPTOMPIO<-factor(homicides_group_mun$muni_code_hecho)
-homicides_group_mun$muni_code_hecho<-NULL
-homicides_group_mun$homicidios<-homicides_group_mun$n
-homicides_group_mun$n<-NULL
+map <- map[,c(1,2)]
 
-map <- map[,c(1,2,3)]
-
-map <- left_join(map, homicides_group_mun)
+map <- left_join(map, homicides_group_dept)
 
 summary(map)
 
 qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,35000,40000,50000)) # Para todo el pais
+#mapa calor departamento
+
+map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+
 
 
 # PLOTS PER_YEAR

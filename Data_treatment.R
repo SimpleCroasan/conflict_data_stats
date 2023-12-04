@@ -76,6 +76,33 @@ homicides_group_mun <- homicide1df %>%
   group_by(muni_code_hecho) %>%
   summarise(n=n())
 
+homicides_group_dept <- homicide1df %>% 
+  group_by(dept_code_hecho) %>%
+  summarise(n=n())
+
+homicides_per_group_dept <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(!grepl("OTRO",Grupo, ignore.case = TRUE)) %>%
+  filter(!grepl("ESTADO",Grupo, ignore.case = TRUE)) %>%
+  filter(!grepl("MULTIPLE",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,dept_code_hecho) %>%
+  summarise(n=n())
+
+
+
+homicides_group_dept <- homicide1df %>% 
+  group_by(dept_code_hecho,p_str) %>%
+  summarise(n=n())
+
+
+
 # datos por año
 
 #Agrupar datos por año del hecho y contando
