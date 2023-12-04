@@ -94,7 +94,7 @@ homicides_per_group_dept <- homicide1df %>%
   group_by(dept_code_hecho) %>%
   top_n(1, wt = n)
 
-homicides_group_dept <-homicides_per_group_dept[,-c(3)]
+homicides_per_group_dept <-homicides_per_group_dept[,-c(3)]
 
 #secuestros por departamento
 kidnapp_group_dept <- kidnapping1df %>% 

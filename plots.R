@@ -10,8 +10,9 @@ library(purrr)
 
 
 #mapa homicidios historico por municipio
-map <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+map <- st_read("Mapas_dept/DepartamentosVeredas.shp") #cargar el mapa
 
+#Acomodar las columnas del dataframe
 homicides_group_dept$DPTO_CCDGO<-factor(homicides_group_dept$dept_code_hecho)
 homicides_group_dept$dept_code_hecho<-NULL
 homicides_group_dept$homicidios<-homicides_group_dept$n
@@ -19,15 +20,18 @@ homicides_group_dept$n<-NULL
 
 map <- map[,c(1,2)]
 
+#unir las coordenadas del mapa con el dataframe
+
 map <- left_join(map, homicides_group_dept)
 
 summary(map)
-
+#graficar
 qtm(map,"homicidios", fill.breaks = c(0,15000,25000, 50000,75000,100000,125000,150000)) # Para todo el pais
 #mapa calor departamento
 
-map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp") #cargar mapas
 
+#Acomodoar columnas
 homicides_per_group_dept$DPTO_CCDGO<-factor(homicides_per_group_dept$dept_code_hecho)
 homicides_per_group_dept$dept_code_hecho<-NULL
 homicides_per_group_dept$Grupo_ar<-homicides_per_group_dept$Grupo
@@ -37,6 +41,7 @@ map2 <- map2[,c(1,2)]
 
 map2 <- left_join(map2, homicides_per_group_dept)
 
+#graficar por grupo
 tm_shape(map2) +
   tm_borders() +
   tm_fill("Grupo_ar", palette = "Set3") +
@@ -44,8 +49,9 @@ tm_shape(map2) +
 
 #mapa secuestros
 
-map3 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+map3 <- st_read("Mapas_dept/DepartamentosVeredas.shp") #cargar mapa
 
+#acomodar columnas
 kidnapp_group_dept$DPTO_CCDGO<-factor(kidnapp_group_dept$dept_code_hecho)
 kidnapp_group_dept$dept_code_hecho<-NULL
 kidnapp_group_dept$secuestros<-kidnapp_group_dept$n
@@ -57,10 +63,13 @@ map3 <- left_join(map3, kidnapp_group_dept)
 
 summary(map3)
 
+#graficas
 qtm(map3,"secuestros", fill.breaks = c(0,1000,3000, 5000,7000,11000)) # Para todo el pais
 #mapa calor departamento
 
-map4 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+map4 <- st_read("Mapas_dept/DepartamentosVeredas.shp") #cargar mapa
+
+#acomodar columnas
 
 kidnapp_per_group_dept$DPTO_CCDGO<-factor(kidnapp_per_group_dept$dept_code_hecho)
 kidnapp_per_group_dept$dept_code_hecho<-NULL
@@ -71,6 +80,7 @@ map4 <- map4[,c(1,2)]
 
 map4 <- left_join(map4, kidnapp_per_group_dept)
 
+#graficas
 tm_shape(map4) +
   tm_borders() +
   tm_fill("Grupo_ar", palette = "Set3") +
