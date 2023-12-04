@@ -135,6 +135,21 @@ kidnapping_per_group <- kidnapping1df %>%
   group_by(yy_hecho,Grupo) %>%
   summarise(n=n())
 
+
+
+disappearance_per_group <- disappearance1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+
 #secuestros que llevan a homicidios
 kidnapp_homicidie <-inner_join(homicide1df, kidnapping1df, by = "match_group_id")
 

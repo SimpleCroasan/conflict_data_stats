@@ -6,6 +6,10 @@ library(disk.frame)
 library(dplyr)
 library(purrr)
 
+# -*- coding: utf-8 -*-
+
+
+
 map <- st_read("Mapas_mun/MunicipiosVeredas.shp")
 
 homicides_group_mun$DPTOMPIO<-factor(homicides_group_mun$muni_code_hecho)
@@ -66,7 +70,20 @@ ggplot(homicides_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
   scale_x_continuous(breaks = seq(min(homicides_per_group$yy_hecho), max(homicides_per_group$yy_hecho), by = 3))
 
 
+#plot kidnapping per group
 
+
+ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
+  geom_line(size =0.8) +
+  geom_line(data = kidnapping_per_year, aes(x = yy_hecho, y = n, linetype = "TOTAL"), color="black")+
+  labs(title = "Número de secuestros por Año y Grupo",
+       x = "Año",
+       y = "Número de secuestros",
+       color = "Grupo") +
+  theme_light() +
+  scale_x_continuous(breaks = seq(min(kidnapping_per_group$yy_hecho), max(kidnapping_per_group$yy_hecho), by = 3))
+
+#plot disappearence_per_group
 
 ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
   geom_line(size =0.8) +

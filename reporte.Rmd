@@ -12,6 +12,7 @@ output:
     
 lang: es-ES
 
+
 ---
 
 # Introducción
@@ -54,6 +55,7 @@ Adicional y opcionalmente se puede usar la siguiente librería para poder leer g
 
 library(disk.frame)
 ```
+---
 
 # Preparación de los datos
 
@@ -250,7 +252,7 @@ recruitment1df <-recruitment1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 
 ## Revision de match_id
 
-Este código se usó para comprobar la relación y funcionamiento de Id dentro de un grupo de csv:
+Este código se usó para comprobar la relación y funcionamiento del Id dentro de un grupo de csv:
 
 ```{r, eval=FALSE}
 
@@ -282,7 +284,7 @@ knitr::kable(
   align = "c",
 )
 ```
-
+---
 
 # Analisis de los datos
 
@@ -347,7 +349,7 @@ knitr::kable(
 )
 ```
 
-también se tiene el total de hechos violentos por año:
+También se tiene el total de hechos violentos por año:
 
 ```{r echo=FALSE}
 knitr::kable(
@@ -389,14 +391,8 @@ kidnapping_per_group <- kidnapping1df %>%
   )) %>%
   group_by(yy_hecho,Grupo) %>%
   summarise(n=n())
-  
 
-
-```
-
-
-```{r, eval=FALSE}
-homicides_per_group <- homicide1df %>%
+disappearance_per_group <- disappearance1df %>%
   mutate(Grupo = case_when(
     
     
@@ -407,6 +403,28 @@ homicides_per_group <- homicide1df %>%
     TRUE ~ "OTRO"
   )) %>%
   group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+
+  
+
+
+```
+
+
+```{r, eval=FALSE}
+homicides_per_group <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    #grepl sirve para encontrar las expresiones regulares 
+    #existen varias guerrillas pero el recopilatorio implica que se tomen como una sola
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>% #agrupacion y conteon
   summarise(n=n())
 
 
@@ -422,17 +440,32 @@ kidnapping_per_group <- kidnapping1df %>%
   )) %>%
   group_by(yy_hecho,Grupo) %>%
   summarise(n=n())
+
+
+
+disappearance_per_group <- disappearance1df %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho,Grupo) %>%
+  summarise(n=n())
+
   
 
 
 ```
 
-
-### Secuestros que llevan a homicidios
+Para este caso solo se tomaron en cuenta los secuestros, desaparaciones y homicidios cometidos por diferentes grupos al margen de la ley. Es importante considerar que existen varias guerrillas así como varios grupos al margen de la ley pero en este caso se tomará la cantidad de hechos violentos cometidos por una clase de grupo en general, por ejemplo las guerrillas en general.
 
 ## Graficas de los hechos
 
-### hechos por año
+### Hechos por año
 
 ```{r, echo=TRUE,results='hide', warning=FALSE}
 
@@ -456,7 +489,12 @@ ggplot(homicides_per_year, aes(x = yy_hecho, y = n, color = "homicidios")) +
 
 ```
 
-### homicidios por grupo
+En esta gráfica se puede observar que el eje "x" representa el avance de los años y el eje "y" representa el numero de hechas respecto al año. La linea negra representa el total de hechos y las demás lineas representan la tendencia de los hechos individualmente. De esta tendencia se observa que todos los hechos se comportan de manera similar a lo largo de los años siguiendo usualmente la misma tendencia. De esta tendencia se observa que, para todos los hechos, durante el periodo comprendido entre el año 1994 y 2003, la tendencia de hechos violentos fue en su mayoría creciente y, en el periodo comprendido entre 2003 y 2006 hubo un decrecimiento para todos los hechos. Este decrecimiento en la violencia se le puede atribuir a diversos  factores como la desmovilización de grupos paramilitares que , coincide históricamente con la época de decrecimiento en la gráfica. Sin embargo es importante considerar que estas tendencias pueden deberse a varios factores y bajo ningún concepto deben atribuirsele a uno solo de ellos.
+
+El hecho que ocurrió con mas frecuencia según la gráfica fue el homicidio estando mas cerca en números al total de los hechos que al segundo hecho mas frecuente. Es importante entender que, muy probablemente, todos estos hechos tienen una relación directa entre ellos, dado que se habla de incremento de la violencia es comprensible que todos los hechos sigan la misma tendencia, así como se puede considerar que la tendencia entre los hechos indica relación entre los mismos.
+
+
+### Hechos por grupo
 
 ```{r, echo=TRUE,results='hide', warning=FALSE}
 
@@ -476,7 +514,13 @@ ggplot(homicides_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
 ```
 
 
-### secuestros por grupo
+En la gráfica de homicidios por grupo la linea negra representa el total de homicidios en función del año y el resto de lineas representan el numero de homicidios realizados por diversos grupos en función del año.
+
+El grupo que más homicidios realizó fueron los paramilitares, seguidos de las guerrillas. Este resultado implica que, tal como se concibe en la cultura popular, los paramilitares solían ser mas propensos a cometer homicidios que los demás grupos.
+
+Tambien se puede observar que, cuando el numero de homicidios por parte de los paramilitares y las guerrillas empezó a disminuir, el numero de homicidios realizados por otros grupos al margen de la ley aumentó. Este aumento se puede deber a disidencias o otros grupos que se crearon tras las desmovilización de los paramilitares entre 2003 y 2006, ya que se puede considerar que un evento como la desmovilización de un agente del conflicto implica cosas como nuevos agentes del mismo.
+
+
 
 ```{r, echo=TRUE,results='hide', warning=FALSE}
 
@@ -493,8 +537,34 @@ ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
 
 ```
 
+En la gráfica de homicidios por grupo la linea negra representa el total de Secuestros en función del año y el resto de lineas representan el numero de secuestros realizados por diversos grupos en función del año.
+
+Se puede observar que, tal como sugiere el ideario colectivo, las guerrillas son el grupo que mas secuestros realiza, encabezando la tendencia en la gráfica, seguidos por los paramilitares y otros  grupos.
+
+En este caso especifico se puede decir que la tendencia del total de secuestros se parece bastante a la tendencia de los secuestros cometidos por las guerrillas, demostrando así que las guerrillas fueron mas propensas a realizar secuestros siendo que la mayoría de los secuestros fueron realizados por las mismas. Estas cifras pueden indicar que las guerrillas lideraron en este apartado dado a que los secuestros eran uno de los mayores medios de ingresos para las guerrillas.
+
+```{r, echo=TRUE,results='hide', warning=FALSE}
+
+#plot disappearence_per_group
+
+ggplot(disappearance_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
+  geom_line(size =0.8) +
+  geom_line(data = disappearance_per_year, aes(x = yy_hecho, y = n, linetype = "TOTAL"),color="black")+
+  labs(title = "Número de desapariciones por Año y Grupo",
+       x = "Año",
+       y = "Número de desapariciones",
+       color = "Grupo") +
+  theme_light() +
+  scale_x_continuous(breaks = seq(min(disappearance_per_group$yy_hecho), max(disappearance_per_group$yy_hecho), by = 3))
 
 
 
+```
+
+
+
+
+### Secuestros que llevan a homicidios
+---
 
 # Conclusiones
