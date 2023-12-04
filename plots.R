@@ -28,7 +28,19 @@ qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,
 
 map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
 
+homicides_per_group_dept$DPTO_CCDGO<-factor(homicides_per_group_dept$dept_code_hecho)
+homicides_per_group_dept$dept_code_hecho<-NULL
+homicides_per_group_dept$Grupo_ar<-homicides_per_group_dept$Grupo
+homicides_per_group_dept$Grupo<-NULL
 
+map2 <- map2[,c(1,2)]
+
+map2 <- left_join(map2, homicides_per_group_dept)
+
+tm_shape(map2) +
+  tm_borders() +
+  tm_fill("Grupo_ar", palette = "Set3") +
+  tm_layout(legend.position = c("right", "bottom"))
 
 # PLOTS PER_YEAR
 #plot total per year
