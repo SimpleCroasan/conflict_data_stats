@@ -21,7 +21,9 @@ map <- map[,c(1,2,3)]
 
 map <- left_join(map, homicides_group_mun)
 
-qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,35000,40000)) # Para todo el pais
+summary(map)
+
+qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,35000,40000,50000)) # Para todo el pais
 
 
 # PLOTS PER_YEAR
