@@ -93,7 +93,9 @@ homicides_per_group_dept <- homicide1df %>%
   filter(!grepl("ESTADO",Grupo, ignore.case = TRUE)) %>%
   filter(!grepl("MULTIPLE",Grupo, ignore.case = TRUE)) %>%
   group_by(Grupo,dept_code_hecho) %>%
-  summarise(n=n())
+  summarise(n=n()) %>%
+  group_by(dept_code_hecho) %>%
+  top_n(1, wt = n)
 
 
 
