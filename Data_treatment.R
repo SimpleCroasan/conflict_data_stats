@@ -68,14 +68,11 @@ recruitment1df <-recruitment1df[,-c(3:36,38:45,1,51,47,49:51,53 )]
 #aplicando las funciones de dplyr para un data frame
 #datos por municipio 
 
-homicides_group_year_mun <- homicide1df %>% 
-  group_by(yy_hecho,muni_code_hecho, dept_code_hecho) %>%
-  summarise(n=n())
-
 homicides_group_mun <- homicide1df %>% 
   group_by(muni_code_hecho) %>%
   summarise(n=n())
 
+#homicidios por departamento
 homicides_group_dept <- homicide1df %>% 
   group_by(dept_code_hecho) %>%
   summarise(n=n())
@@ -99,10 +96,33 @@ homicides_per_group_dept <- homicide1df %>%
 
 homicides_group_dept <-homicides_per_group_dept[,-c(3)]
 
+#secuestros por departamento
+kidnapp_group_dept <- kidnapping1df %>% 
+  group_by(dept_code_hecho) %>%
+  summarise(n=n())
 
+kidnapp_per_group_dept <- kidnapping1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(!grepl("OTRO",Grupo, ignore.case = TRUE)) %>%
+  filter(!grepl("ESTADO",Grupo, ignore.case = TRUE)) %>%
+  filter(!grepl("MULTIPLE",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,dept_code_hecho) %>%
+  summarise(n=n()) %>%
+  group_by(dept_code_hecho) %>%
+  top_n(1, wt = n)
 
-homicides_group_dept <- homicide1df %>% 
-  group_by(dept_code_hecho,p_str) %>%
+kidnapp_per_group_dept <-kidnapp_per_group_dept[,-c(3)]
+
+#reclutamiento
+recruitment_group_dept <- recruitment1df %>% 
+  group_by(dept_code_hecho) %>%
   summarise(n=n())
 
 

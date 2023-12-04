@@ -23,7 +23,7 @@ map <- left_join(map, homicides_group_dept)
 
 summary(map)
 
-qtm(map,"homicidios", fill.breaks = c(0,1000,5000,10000,15000,20000,25000,30000,35000,40000,50000)) # Para todo el pais
+qtm(map,"homicidios", fill.breaks = c(0,15000,25000, 50000,75000,100000,125000,150000)) # Para todo el pais
 #mapa calor departamento
 
 map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
@@ -41,6 +41,61 @@ tm_shape(map2) +
   tm_borders() +
   tm_fill("Grupo_ar", palette = "Set3") +
   tm_layout(legend.position = c("right", "bottom"))
+
+#mapa secuestros
+
+map3 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+
+kidnapp_group_dept$DPTO_CCDGO<-factor(kidnapp_group_dept$dept_code_hecho)
+kidnapp_group_dept$dept_code_hecho<-NULL
+kidnapp_group_dept$secuestros<-kidnapp_group_dept$n
+kidnapp_group_dept$n<-NULL
+
+map3 <- map3[,c(1,2)]
+
+map3 <- left_join(map3, kidnapp_group_dept)
+
+summary(map3)
+
+qtm(map3,"secuestros", fill.breaks = c(0,1000,3000, 5000,7000,11000)) # Para todo el pais
+#mapa calor departamento
+
+map4 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+
+kidnapp_per_group_dept$DPTO_CCDGO<-factor(kidnapp_per_group_dept$dept_code_hecho)
+kidnapp_per_group_dept$dept_code_hecho<-NULL
+kidnapp_per_group_dept$Grupo_ar<-kidnapp_per_group_dept$Grupo
+kidnapp_per_group_dept$Grupo<-NULL
+
+map4 <- map4[,c(1,2)]
+
+map4 <- left_join(map4, kidnapp_per_group_dept)
+
+tm_shape(map4) +
+  tm_borders() +
+  tm_fill("Grupo_ar", palette = "Set3") +
+  tm_layout(legend.position = c("right", "bottom"))
+
+#reclutamiento por depa
+
+map5 <- st_read("Mapas_dept/DepartamentosVeredas.shp")
+
+recruitment_group_dept$DPTO_CCDGO<-factor(recruitment_group_dept$dept_code_hecho)
+recruitment_group_dept$dept_code_hecho<-NULL
+recruitment_group_dept$reclutamiento<-recruitment_group_dept$n
+recruitment_group_dept$n<-NULL
+
+map5 <- map5[,c(1,2)]
+
+map5 <- left_join(map5, recruitment_group_dept)
+
+summary(map5)
+
+qtm(map5,"reclutamiento", fill.breaks = c(0,500,1000, 1500,2000,2500,3000,3500))
+
+
+
+
 
 # PLOTS PER_YEAR
 #plot total per year
