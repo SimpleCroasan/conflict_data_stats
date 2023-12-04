@@ -537,7 +537,7 @@ ggplot(kidnapping_per_group, aes(x = yy_hecho, y = n, color = Grupo)) +
 
 ```
 
-En la gráfica de homicidios por grupo la linea negra representa el total de Secuestros en función del año y el resto de lineas representan el numero de secuestros realizados por diversos grupos en función del año.
+En la gráfica de secuestros por grupo la linea negra representa el total de Secuestros en función del año y el resto de lineas representan el numero de secuestros realizados por diversos grupos en función del año.
 
 Se puede observar que, tal como sugiere el ideario colectivo, las guerrillas son el grupo que mas secuestros realiza, encabezando la tendencia en la gráfica, seguidos por los paramilitares y otros  grupos.
 
