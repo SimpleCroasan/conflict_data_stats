@@ -4,7 +4,7 @@ library(disk.frame)
 library(dplyr)
 library(purrr)
 library(tidyr) 
-
+library(moments)
 #revisar si el id conecta diferentes hechos
 valores_comunes <- homicide1df$match_group_id %in% kidnapping1df$match_group_id
 print(any(valores_comunes)) #mostrar si existen filas con la misma id en los df
@@ -216,5 +216,204 @@ kidnapping_homicide_per_group <- kidnapp_homicidie %>%
   )) %>%
   group_by(yy_hecho.x,Grupo) %>%
   summarise(n=n())
+
+
+#medidas estadisticas
+
+hom_gue <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("GUERRILLA",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+hom_gue <- hom_gue$n #seleccionar un vector que representa los homicidios
+
+print(mean(hom_gue))
+print(quantile(hom_gue))
+print(sd(hom_gue))
+print(skewness(hom_gue))
+print(kurtosis(hom_gue)-3)
+
+#homicidios por paramilitares
+
+hom_para <- homicide1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("PARAMILITARES",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+hom_para <- hom_para$n #seleccionar un vector que representa los homicidios
+
+print(mean(hom_para))
+print(quantile(hom_para))
+print(sd(hom_para))
+print(skewness(hom_para))
+print(kurtosis(hom_para)-3)
+
+# secuestros por guerrilla
+
+kidn_gue <- kidnapping1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("GUERRILLA",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+kidn_gue <- kidn_gue$n #seleccionar un vector que representa los homicidios
+
+
+
+print(mean(kidn_gue))
+print(quantile(kidn_gue))
+print(sd(kidn_gue))
+print(skewness(kidn_gue))
+print(kurtosis(kidn_gue)-3)
+
+#secuestros por para
+
+kidn_para <- kidnapping1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("PARAMILITARES",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+kidn_para <- kidn_para$n #seleccionar un vector que representa los homicidios
+
+print(mean(kidn_para))
+print(quantile(kidn_para))
+print(sd(kidn_para))
+print(skewness(kidn_para))
+print(kurtosis(kidn_para)-3)
+
+
+
+
+# desapariciones por guerrilla
+
+dis_gue <- disappearance1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("GUERRILLA",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+dis_gue <- dis_gue$n #seleccionar un vector que representa los homicidios
+
+print(mean(dis_gue))
+print(quantile(dis_gue))
+print(sd(dis_gue))
+print(skewness(dis_gue))
+print(kurtosis(dis_gue)-3)
+
+
+
+
+
+
+# desapariciones por para
+
+dis_para <- disappearance1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("PARAMILITARES",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+dis_para <- dis_para$n #seleccionar un vector que representa los homicidios
+
+print(mean(dis_para))
+print(quantile(dis_para))
+print(sd(dis_para))
+print(skewness(dis_para))
+print(kurtosis(dis_para)-3)
+
+
+
+# reclutamiento por guerrilla
+
+rec_gue <- recruitment1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("GUERRILLA",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+rec_gue <- rec_gue$n #seleccionar un vector que representa los homicidios
+
+print(mean(rec_gue))
+print(quantile(rec_gue))
+print(sd(rec_gue))
+print(skewness(rec_gue))
+print(kurtosis(rec_gue)-3)
+
+
+# reclutamiento por para
+
+rec_para <- recruitment1df %>%
+  mutate(Grupo = case_when(
+    
+    grepl("GUE",p_str) ~ "GUERRILLA",
+    grepl("PARA",p_str) ~ "PARAMILITARES",
+    grepl("EST",p_str) ~ "ESTADO",
+    grepl("multiple",p_str) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  filter(grepl("PARAMILITARES",Grupo, ignore.case = TRUE)) %>%
+  group_by(Grupo,yy_hecho) %>%
+  summarise(n=n())
+
+rec_para <- rec_para$n #seleccionar un vector que representa los homicidios
+
+print(mean(rec_para))
+print(quantile(rec_para))
+print(sd(rec_para))
+print(skewness(rec_para))
+print(kurtosis(rec_para)-3)
+
 
 
