@@ -598,10 +598,8 @@ Para este caso solo se tomaron en cuenta los secuestros, desaparaciones y homici
 
 ## Medidas estadisticas
 
-```{r, echo=TRUE,results='hide',include=FALSE}
-#medidas estadisticas
-
-
+```{r,eval=FALSE}
+print("-------------HOMICIDIOS GUE")
 hom_gue <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -616,15 +614,19 @@ hom_gue <- homicide1df %>%
   summarise(n=n())
 
 hom_gue <- hom_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_gue))
+print("CUARTILES")
 print(quantile(hom_gue))
+print("DESVIACION ESTANDAR")
 print(sd(hom_gue))
+print("SESGO")
 print(skewness(hom_gue))
+print("kURTOSIS")
 print(kurtosis(hom_gue)-3)
 
 #homicidios por paramilitares
-
+print("-------------HOMICIDIOS PARA")
 hom_para <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -639,14 +641,19 @@ hom_para <- homicide1df %>%
   summarise(n=n())
 
 hom_para <- hom_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_para))
+print("CUARTILES")
 print(quantile(hom_para))
+print("DESVIACION ESTANDAR")
 print(sd(hom_para))
+print("SESGO")
 print(skewness(hom_para))
+print("kURTOSIS")
 print(kurtosis(hom_para)-3)
 
 # secuestros por guerrilla
+print("-------------SECUESTROS GUE")
 
 kidn_gue <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -664,14 +671,19 @@ kidn_gue <- kidnapping1df %>%
 kidn_gue <- kidn_gue$n #seleccionar un vector que representa los homicidios
 
 
-
+print("MEDIA")
 print(mean(kidn_gue))
+print("CUARTILES")
 print(quantile(kidn_gue))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_gue))
+print("SESGO")
 print(skewness(kidn_gue))
+print("kURTOSIS")
 print(kurtosis(kidn_gue)-3)
 
 #secuestros por para
+print("-------------SECUESTROS PARA")
 
 kidn_para <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -687,17 +699,22 @@ kidn_para <- kidnapping1df %>%
   summarise(n=n())
 
 kidn_para <- kidn_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(kidn_para))
+print("CUARTILES")
 print(quantile(kidn_para))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_para))
+print("SESGO")
 print(skewness(kidn_para))
+print("kURTOSIS")
 print(kurtosis(kidn_para)-3)
 
 
 
 
 # desapariciones por guerrilla
+print("-------------DESAPARICION GUE")
 
 dis_gue <- disappearance1df %>%
   mutate(Grupo = case_when(
@@ -713,11 +730,15 @@ dis_gue <- disappearance1df %>%
   summarise(n=n())
 
 dis_gue <- dis_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_gue))
+print("CUARTILES")
 print(quantile(dis_gue))
+print("DESVIACION ESTANDAR")
 print(sd(dis_gue))
+print("SESGO")
 print(skewness(dis_gue))
+print("kURTOSIS")
 print(kurtosis(dis_gue)-3)
 
 
@@ -726,7 +747,7 @@ print(kurtosis(dis_gue)-3)
 
 
 # desapariciones por para
-
+print("-------------DESAPARICION PARA")
 dis_para <- disappearance1df %>%
   mutate(Grupo = case_when(
     
@@ -741,16 +762,21 @@ dis_para <- disappearance1df %>%
   summarise(n=n())
 
 dis_para <- dis_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_para))
+print("CUARTILES")
 print(quantile(dis_para))
+print("DESVIACION ESTANDAR")
 print(sd(dis_para))
+print("SESGO")
 print(skewness(dis_para))
+print("kURTOSIS")
 print(kurtosis(dis_para)-3)
 
 
 
 # reclutamiento por guerrilla
+print("-------------RECLUTAMIENTO GUE")
 
 rec_gue <- recruitment1df %>%
   mutate(Grupo = case_when(
@@ -766,16 +792,20 @@ rec_gue <- recruitment1df %>%
   summarise(n=n())
 
 rec_gue <- rec_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_gue))
+print("CUARTILES")
 print(quantile(rec_gue))
+print("DESVIACION ESTANDARD")
 print(sd(rec_gue))
+print("SESGO")
 print(skewness(rec_gue))
+print("kURTOSIS")
 print(kurtosis(rec_gue)-3)
 
 
 # reclutamiento por para
-
+print("-------------RECLUTAMIENTO PARA")
 rec_para <- recruitment1df %>%
   mutate(Grupo = case_when(
     
@@ -790,13 +820,16 @@ rec_para <- recruitment1df %>%
   summarise(n=n())
 
 rec_para <- rec_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_para))
+print("CUARTILES")
 print(quantile(rec_para))
+print("DESVIACION ESTANDAR")
 print(sd(rec_para))
+print("SESGO")
 print(skewness(rec_para))
+print("kURTOSIS")
 print(kurtosis(rec_para)-3)
-
 
 
 
@@ -806,10 +839,8 @@ print(kurtosis(rec_para)-3)
 
 ```
 
-
-```{r, eval=FALSE}
-#medidas estadisticas
-
+```{r,echo=FALSE}
+print("-------------HOMICIDIOS GUE")
 hom_gue <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -824,15 +855,19 @@ hom_gue <- homicide1df %>%
   summarise(n=n())
 
 hom_gue <- hom_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_gue))
+print("CUARTILES")
 print(quantile(hom_gue))
+print("DESVIACION ESTANDAR")
 print(sd(hom_gue))
+print("SESGO")
 print(skewness(hom_gue))
+print("kURTOSIS")
 print(kurtosis(hom_gue)-3)
 
 #homicidios por paramilitares
-
+print("-------------HOMICIDIOS PARA")
 hom_para <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -847,14 +882,19 @@ hom_para <- homicide1df %>%
   summarise(n=n())
 
 hom_para <- hom_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_para))
+print("CUARTILES")
 print(quantile(hom_para))
+print("DESVIACION ESTANDAR")
 print(sd(hom_para))
+print("SESGO")
 print(skewness(hom_para))
+print("kURTOSIS")
 print(kurtosis(hom_para)-3)
 
 # secuestros por guerrilla
+print("-------------SECUESTROS GUE")
 
 kidn_gue <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -872,14 +912,19 @@ kidn_gue <- kidnapping1df %>%
 kidn_gue <- kidn_gue$n #seleccionar un vector que representa los homicidios
 
 
-
+print("MEDIA")
 print(mean(kidn_gue))
+print("CUARTILES")
 print(quantile(kidn_gue))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_gue))
+print("SESGO")
 print(skewness(kidn_gue))
+print("kURTOSIS")
 print(kurtosis(kidn_gue)-3)
 
 #secuestros por para
+print("-------------SECUESTROS PARA")
 
 kidn_para <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -895,17 +940,22 @@ kidn_para <- kidnapping1df %>%
   summarise(n=n())
 
 kidn_para <- kidn_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(kidn_para))
+print("CUARTILES")
 print(quantile(kidn_para))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_para))
+print("SESGO")
 print(skewness(kidn_para))
+print("kURTOSIS")
 print(kurtosis(kidn_para)-3)
 
 
 
 
 # desapariciones por guerrilla
+print("-------------DESAPARICION GUE")
 
 dis_gue <- disappearance1df %>%
   mutate(Grupo = case_when(
@@ -921,11 +971,15 @@ dis_gue <- disappearance1df %>%
   summarise(n=n())
 
 dis_gue <- dis_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_gue))
+print("CUARTILES")
 print(quantile(dis_gue))
+print("DESVIACION ESTANDAR")
 print(sd(dis_gue))
+print("SESGO")
 print(skewness(dis_gue))
+print("kURTOSIS")
 print(kurtosis(dis_gue)-3)
 
 
@@ -934,7 +988,7 @@ print(kurtosis(dis_gue)-3)
 
 
 # desapariciones por para
-
+print("-------------DESAPARICION PARA")
 dis_para <- disappearance1df %>%
   mutate(Grupo = case_when(
     
@@ -949,16 +1003,21 @@ dis_para <- disappearance1df %>%
   summarise(n=n())
 
 dis_para <- dis_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_para))
+print("CUARTILES")
 print(quantile(dis_para))
+print("DESVIACION ESTANDAR")
 print(sd(dis_para))
+print("SESGO")
 print(skewness(dis_para))
+print("kURTOSIS")
 print(kurtosis(dis_para)-3)
 
 
 
 # reclutamiento por guerrilla
+print("-------------RECLUTAMIENTO GUE")
 
 rec_gue <- recruitment1df %>%
   mutate(Grupo = case_when(
@@ -974,16 +1033,20 @@ rec_gue <- recruitment1df %>%
   summarise(n=n())
 
 rec_gue <- rec_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_gue))
+print("CUARTILES")
 print(quantile(rec_gue))
+print("DESVIACION ESTANDARD")
 print(sd(rec_gue))
+print("SESGO")
 print(skewness(rec_gue))
+print("kURTOSIS")
 print(kurtosis(rec_gue)-3)
 
 
 # reclutamiento por para
-
+print("-------------RECLUTAMIENTO PARA")
 rec_para <- recruitment1df %>%
   mutate(Grupo = case_when(
     
@@ -998,12 +1061,18 @@ rec_para <- recruitment1df %>%
   summarise(n=n())
 
 rec_para <- rec_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_para))
+print("CUARTILES")
 print(quantile(rec_para))
+print("DESVIACION ESTANDAR")
 print(sd(rec_para))
+print("SESGO")
 print(skewness(rec_para))
+print("kURTOSIS")
 print(kurtosis(rec_para)-3)
+
+
 
 
 
@@ -1143,7 +1212,9 @@ qtm(map,"homicidios", fill.breaks = c(0,15000,25000, 50000,75000,100000,125000,1
 
 ```
 
+En este gráfico se muestra un mapa de calor por departamentos en función de ciertos intervalos que representan el número de homicidios a lo largo de la historia del país.
 
+En este mapa se puede observar como Antioquia es el departamento con mayor número de homicidios con más de 125000 homicidios registrados en su historia, también se observa que el segundo departamento con mayor número de homicidios fué Valle del Cauca con más de 50000 homicidios. Adicional a esto se observa que la zona norte del país tuvo un mayor índice de homicidios que el resto del país
 
 ```{r, echo=TRUE,results='hide', warning=FALSE,message=FALSE}
 map2 <- st_read("Mapas_dept/DepartamentosVeredas.shp") #cargar mapas
@@ -1168,6 +1239,9 @@ tm_shape(map2) +
 
 ```
 
+En este gráfico se hizo una representación binaria, comparando las cifras que se le atribuyen a grupos paramilitares con las que se le atribuyen a las guerrillas. Los departamentos en verde son aquellos en los que las guerrillas tienen mayor cifra de homicidios que los paramilitares, y los departamentos en amarillo son aquellos en los que los paramilitares alcanzaron mayores cifras que las guerrillas. 
+
+Si bien la zona que corresponde a grupos paramilitares en el mapa, al compararla con el mapa de calor, tiene mayores cifras de homicidios, las guerrillas tienen mayor impacto en mayor número de departamentos
 
 
 ```{r, echo=TRUE,results='hide', warning=FALSE,message=FALSE}
@@ -1192,7 +1266,9 @@ qtm(map3,"secuestros", fill.breaks = c(0,1000,3000, 5000,7000,11000))
 
 ```
 
+En este grafico se muestra un mapa de calor por departamentos en función de ciertos intervalos que representan el número de Secuestros a lo largo de la historia del país.
 
+ Se puede observar como una vez más Antioquia es el departamento más afectado. En este caso el mapa de calor presenta mayor uniformidad, sin embargo el norte del país sigue teniendo un gran número de casos con respecto al resto de país.
 
 ```{r, echo=TRUE,results='hide', warning=FALSE,message=FALSE}
 
@@ -1219,7 +1295,9 @@ tm_shape(map4) +
 
 ```
 
+En este grafico se hizo una representación binaria, comparando las cifras que se le atribuyen a grupos paramilitares con las que se le atribuyen a las guerrillas. Los departamentos en verde son aquellos en los que las guerrillas tienen mayor cifra de secuestros que los paramilitares , y los departamentos en amarillo son aquellos en los que los paramilitares alcanzaron mayores cifras que las guerrillas. 
 
+Se puede observar como las guerrillas tienen mayor impacto en el mapa en tema de secuestros que los paramilitares, siendo que , los paramilitares solo tuvieron más impacto que las guerrillas en dos departamentos.
 
 
 ```{r, echo=TRUE,results='hide', warning=FALSE,message=FALSE}
@@ -1245,10 +1323,92 @@ qtm(map5,"reclutamiento", fill.breaks = c(0,500,1000, 1500,2000,2500,3000,3500))
 
 ```
 
+En este gráfico se muestra un mapa de calor por departamentos en función de ciertos intervalos que representan el número de reclutamientos a lo largo de la historia del país.
+
+Se puede observar como Antioquia es un departamento en el que suelen haber muchos reclutamientos, sin embargo, el departamento con mayor número de reclutamientos fué el Meta. Además se puede observar como la zona centro-sur del país fue la que se vió mas afectada para este caso.
 
 
 ### Secuestros que llevan a homicidios
 
+Hay una relación entre varios registros de diferentes dataframes de un mismo grupo por id.
+
+Tomando estos datos y los datos totales se puede decir que cerca del 12% de los secuestros efectuados por las guerrillas terminan en homicidios mientras que cerca del 28% de secuestros realizados por los paramilitares terminan en homicidios
+
+A continuacion se muestra la respectiva tabla.
+
+```{r, echo=TRUE,results='hide', warning=FALSE,message=FALSE}
+kidnapp_homicidie <-inner_join(homicide1df, kidnapping1df, by = "match_group_id")
+
+kidnapping_homicide_per_group <- kidnapp_homicidie %>%
+  mutate(Grupo = case_when(
+    
+    
+    grepl("GUE",p_str.x) ~ "GUERRILLA",
+    grepl("PARA",p_str.x) ~ "PARAMILITARES",
+    grepl("EST",p_str.x) ~ "ESTADO",
+    grepl("multiple",p_str.x) ~ "MULTIPLE",
+    TRUE ~ "OTRO"
+  )) %>%
+  group_by(yy_hecho.x,Grupo) %>%
+  summarise(n=n())
+
+```
+
+El dataframe generado muestra el numero de secuestros que terminaron en homicidio por parte de Las guerrillas y los paramilitares a lo largo de la historia.
+
+```{r echo=FALSE}
+knitr::kable(
+  head(kidnapping_homicide_per_group),
+  caption = "Homicidios que llevan a secuestros",
+  table.attr = 'class="table table-striped table-bordered"',
+  align = "c",
+  format = "html"
+  
+)
+```
+  
 
 ---
 # Conclusiones
+
+## Datos por año
+En general la violencia en el margen del conflicto armado aumentó hasta llegar a su punto máximo en el año 2003 para luego decrecer. De esto se pueden decir varias cosas:
+ 
+1. Se desconoce si en los primeros años registrados en los datasets se omitió información, ya sea por las limitaciones de la época para mantener registros de los datos o contexto social.
+
+2. Al decrecimiento de las tendencias se le pueden atribuir distintos factores, pero un factor considerable puede ser la desmovilización de los paramilitares entre 2003 y 2006.
+
+El homicidio fue el hecho mas frecuente a lo largo de los años, siendo tan frecuente que se acerca mas al total de los hechos que al segundo hecho mas frecuente.
+ 
+ 
+## Datos por grupo
+ 
+* En lo que respecta a homicidios y desapariciones los paramilitares tuvieron las mayores cifras. Este numero de cifras respalda la creencia popular sobre el hecho de que los paramilitares eran mas propensos a cometer homicidios.
+
+* En lo referente a secuestros las guerrillas tuvieron mayores cifras que los paramilitares y cualquier otro grupo. Esto indica que la creencia popular de que las guerrillas son propuestas a realizar secuestros es acorde a los datos tomados. Ademas se puede complementar esta información con los hechos históricamente conocidos de que las guerrillas encontraban financiamiento en los secuestros
+
+* Como se mencionó en el inciso anterior, la desmovilización de los paramilitares pudo ser un factor muy influyente en la disminución de la violencia, Sin embargo, cuando ocurrió este hecho y en ese mismo aumentaron los hechos atribuidos a otros grupos desconocidos. Estos grupos desconocidos pueden ser tantos disidencias como nuevos grupos que surgieron tras el vacío de participación de los paramilitares.
+
+## Datos por departamento
+ 
+En este caso ocurrió algo sorpresivo en lo que respecta a secuestros y homicidios se puede decir que las guerrillas tuvieron mas impacto en el país que los paramilitares, por lo tanto se puede hallar una explicación sobré porqué existe mayor rechazo hacia las guerrillas que hacia los paramilitares. Entonces cabe preguntarse ¿Porqué si las guerrillas tuvieron mayor impacto en un numero de departamentos los paramilitares tienen mayores cifras en lo que respecta a hechos violentos?, la respuesta radica en que, aunque las guerrillas tuvieron predominancia en la mayoría de departamentos y ,en tema de secuestros tuvieron predominancia en casi todo el país, los paramilitares tuvieron cifras demasiado elevadas en los departamentos en los que tuvieron predominancia como por ejemplo el departamento de Antoquia, el cual podría ser considerado "zona roja" , dado que fue el departamento con mayor indice de violencia entre todos los departamentos.
+
+Sobre los secuestros que llevan a homicidios se pueden decir dos cosas:
+
+1. Si bien las guerrillas eran mas propensas a cometer secuestros, es mas probable que ese secuestro no lleve a un homicidios que un secuestro realizado por paramilitares.
+
+2. En cuestión de cifras los secuestros que llevan a homicidios no representan gran parte de los hechos, siendo que solo 9200 secuestros terminaron en homicidios.
+
+## Informacion que no cubre este informe.
+
+* No se consideró ni el sexo ni la etnia.
+* No se considerarón las imputaciones de la JEP puesto que no es el objetivo del informe.
+* Se desconocen las limitaciones del conjunto de datos
+
+
+
+# Referencias
+
+Datos del DANE
+
+* [Link a hipervinculo] (https://microdatos.dane.gov.co/index.php/catalog/795)

@@ -219,7 +219,7 @@ kidnapping_homicide_per_group <- kidnapp_homicidie %>%
 
 
 #medidas estadisticas
-
+print("-------------HOMICIDIOS GUE")
 hom_gue <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -234,15 +234,19 @@ hom_gue <- homicide1df %>%
   summarise(n=n())
 
 hom_gue <- hom_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_gue))
+print("CUARTILES")
 print(quantile(hom_gue))
+print("DESVIACION ESTANDAR")
 print(sd(hom_gue))
+print("SESGO")
 print(skewness(hom_gue))
+print("kURTOSIS")
 print(kurtosis(hom_gue)-3)
 
 #homicidios por paramilitares
-
+print("-------------HOMICIDIOS PARA")
 hom_para <- homicide1df %>%
   mutate(Grupo = case_when(
     
@@ -257,14 +261,19 @@ hom_para <- homicide1df %>%
   summarise(n=n())
 
 hom_para <- hom_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(hom_para))
+print("CUARTILES")
 print(quantile(hom_para))
+print("DESVIACION ESTANDAR")
 print(sd(hom_para))
+print("SESGO")
 print(skewness(hom_para))
+print("kURTOSIS")
 print(kurtosis(hom_para)-3)
 
 # secuestros por guerrilla
+print("-------------SECUESTROS GUE")
 
 kidn_gue <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -282,14 +291,19 @@ kidn_gue <- kidnapping1df %>%
 kidn_gue <- kidn_gue$n #seleccionar un vector que representa los homicidios
 
 
-
+print("MEDIA")
 print(mean(kidn_gue))
+print("CUARTILES")
 print(quantile(kidn_gue))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_gue))
+print("SESGO")
 print(skewness(kidn_gue))
+print("kURTOSIS")
 print(kurtosis(kidn_gue)-3)
 
 #secuestros por para
+print("-------------SECUESTROS PARA")
 
 kidn_para <- kidnapping1df %>%
   mutate(Grupo = case_when(
@@ -305,17 +319,22 @@ kidn_para <- kidnapping1df %>%
   summarise(n=n())
 
 kidn_para <- kidn_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(kidn_para))
+print("CUARTILES")
 print(quantile(kidn_para))
+print("DESVIACION ESTANDAR")
 print(sd(kidn_para))
+print("SESGO")
 print(skewness(kidn_para))
+print("kURTOSIS")
 print(kurtosis(kidn_para)-3)
 
 
 
 
 # desapariciones por guerrilla
+print("-------------DESAPARICION GUE")
 
 dis_gue <- disappearance1df %>%
   mutate(Grupo = case_when(
@@ -331,11 +350,15 @@ dis_gue <- disappearance1df %>%
   summarise(n=n())
 
 dis_gue <- dis_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_gue))
+print("CUARTILES")
 print(quantile(dis_gue))
+print("DESVIACION ESTANDAR")
 print(sd(dis_gue))
+print("SESGO")
 print(skewness(dis_gue))
+print("kURTOSIS")
 print(kurtosis(dis_gue)-3)
 
 
@@ -344,7 +367,7 @@ print(kurtosis(dis_gue)-3)
 
 
 # desapariciones por para
-
+print("-------------DESAPARICION PARA")
 dis_para <- disappearance1df %>%
   mutate(Grupo = case_when(
     
@@ -359,16 +382,21 @@ dis_para <- disappearance1df %>%
   summarise(n=n())
 
 dis_para <- dis_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(dis_para))
+print("CUARTILES")
 print(quantile(dis_para))
+print("DESVIACION ESTANDAR")
 print(sd(dis_para))
+print("SESGO")
 print(skewness(dis_para))
+print("kURTOSIS")
 print(kurtosis(dis_para)-3)
 
 
 
 # reclutamiento por guerrilla
+print("-------------RECLUTAMIENTO GUE")
 
 rec_gue <- recruitment1df %>%
   mutate(Grupo = case_when(
@@ -384,16 +412,20 @@ rec_gue <- recruitment1df %>%
   summarise(n=n())
 
 rec_gue <- rec_gue$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_gue))
+print("CUARTILES")
 print(quantile(rec_gue))
+print("DESVIACION ESTANDARD")
 print(sd(rec_gue))
+print("SESGO")
 print(skewness(rec_gue))
+print("kURTOSIS")
 print(kurtosis(rec_gue)-3)
 
 
 # reclutamiento por para
-
+print("-------------RECLUTAMIENTO PARA")
 rec_para <- recruitment1df %>%
   mutate(Grupo = case_when(
     
@@ -408,11 +440,15 @@ rec_para <- recruitment1df %>%
   summarise(n=n())
 
 rec_para <- rec_para$n #seleccionar un vector que representa los homicidios
-
+print("MEDIA")
 print(mean(rec_para))
+print("CUARTILES")
 print(quantile(rec_para))
+print("DESVIACION ESTANDAR")
 print(sd(rec_para))
+print("SESGO")
 print(skewness(rec_para))
+print("kURTOSIS")
 print(kurtosis(rec_para)-3)
 
 
